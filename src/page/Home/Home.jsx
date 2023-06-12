@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { fetchTrendingMovies } from '../../services/MoviApi';
 import Loader from 'components/Loader/Loader';
+// import ErrorMessage from 'components/Error/Error';
+import MovieList from 'components/MovieList/MovieList';
 
 const Home = () => {
-  const [setFilms] = useState([]);
+  const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(false);
+  // const { movies, error } = fetchTrendingMovies();
 
   useEffect(() => {
     const fetchTrendingFilm = () => {
       setLoading(true);
 
       fetchTrendingMovies()
-        .then(trendingsFilms => {
-          setFilms(trendingsFilms);
+        .then(data => {
+          setFilms(data);
         })
         .catch(error => {
           console.log(error);
@@ -22,15 +25,15 @@ const Home = () => {
         });
     };
     fetchTrendingFilm();
-  });
+  }, []);
 
   return (
-    <main>
+    <section>
       <h1>Trending today</h1>
-      {/* <EditorList films={films} /> */}
-
+      {/* {error && <ErrorMessage message={error} />} */}
+      {films && <MovieList movies={films} />}
       {loading && <Loader />}
-    </main>
+    </section>
   );
 };
 
