@@ -11,7 +11,7 @@ const STATUS = {
   REJECTED: 'rejected',
 };
 
-const Home = () => {
+export default function Home() {
   const [status, setStatus] = useState(STATUS.IDLE);
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -48,6 +48,4 @@ const Home = () => {
       {!loading && <Loader />}
     </section>
   );
-};
-
-export default Home;
+}

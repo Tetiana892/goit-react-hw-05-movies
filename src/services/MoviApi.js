@@ -20,23 +20,43 @@ export const searchByMovies = async keyword => {
 
 // запит повної інформації про фільм для сторінки кінофільму
 export const searchGeneralInfo = async movieId => {
-  const response = await axios.get(
+  const { data } = await axios.get(
     `movie/${movieId}?api_key=${API_KEY}&language=en-US`
   );
-  return response.data;
+  const dataMovies = {
+    originalTitle: data.original_title,
+    title: data.title,
+    genres: data.genres,
+    overview: data.overview,
+    poster: data.poster_path,
+    releaseDate: data.release_date.slice(0, 4),
+    voteAverage: data.vote_average,
+  };
+  return dataMovies;
 };
 
 // запит інформації про акторів
 export const fetchMovieCasts = async movieId => {
-  const response = await axios.get(
+  const { data } = await axios.get(
     `movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`
   );
-  return response.data;
+  const castInfo = data.cast.map(({ id, name, profile_path }) => ({
+    id,
+    name,
+    profilePath: profile_path,
+  }));
+  return castInfo;
 };
 
 // запит обзорів для сторінки кінофільмів
 export const fetchMovieReviews = async movieId => {
-  const response = await axios.get(`
+  const { data } = await axios.get(`
   movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`);
-  return response.data.results;
+  const reviewsInfo = data.results.map(({ id, author, content }) => ({
+    id,
+    author,
+    content,
+  }));
+
+  return reviewsInfo;
 };

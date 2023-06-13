@@ -12,15 +12,6 @@ export default function Movies() {
   const [error, setError] = useState(null);
   const [spiner, setSpiner] = useState(false);
 
-  const formSubmit = value => {
-    setSearchParams({ query: value });
-  };
-
-  const formErrorMessage = () => {
-    setMovies([]);
-    setError('You entered an empty row!');
-  };
-
   useEffect(() => {
     const currentQuery = searchParams.get('query');
 
@@ -39,6 +30,15 @@ export default function Movies() {
       .catch(error => setError(error.message))
       .finally(setSpiner(false));
   }, [searchParams]);
+
+  const formSubmit = value => {
+    setSearchParams({ query: value });
+  };
+
+  const formErrorMessage = () => {
+    setMovies([]);
+    setError('You entered an empty row!');
+  };
 
   return (
     <div>
