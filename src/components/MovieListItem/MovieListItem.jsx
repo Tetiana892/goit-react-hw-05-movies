@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-// import PropTypes from 'react';
+import PropTypes from 'prop-types';
 import { Item, Image, Title } from './MovieListItem.styled';
 
 export default function MovieListItem({ id, title, poster }) {
@@ -23,8 +23,8 @@ export default function MovieListItem({ id, title, poster }) {
   );
 }
 
-// MovieListItem.propTypes = {
-//   // title: PropTypes.string,
-//   // id: PropTypes.number,
-//   poster: PropTypes.string,
-// };
+MovieListItem.propTypes = {
+  title: PropTypes.string,
+  id: PropTypes.number,
+  poster: PropTypes.string,
+};

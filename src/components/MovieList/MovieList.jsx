@@ -1,4 +1,4 @@
-// import PropTypes from 'react';
+import PropTypes from 'prop-types';
 
 import { List } from './MovieList.styled';
 import MovieListItem from 'components/MovieListItem/MovieListItem';
@@ -20,6 +20,6 @@ export default function MovieList({ movies }) {
   );
 }
 
-// MovieList.propTypes = {
-//   movies: PropTypes.arrayOf(PropTypes.object).isRequired,
-// };
+MovieList.propTypes = {
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
