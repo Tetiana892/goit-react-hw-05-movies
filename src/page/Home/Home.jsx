@@ -1,38 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { fetchTrendingMovies } from '../../services/MoviApi';
 import Loader from 'components/Loader/Loader';
-// import ErrorMessage from 'components/Error/Error';
+import ErrorMessage from 'components/Error/Error';
 import MovieList from 'components/MovieList/MovieList';
 
+const STATUS = {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  RESOLVED: 'resolved',
+  REJECTED: 'rejected',
+};
+
 const Home = () => {
-  const [films, setFilms] = useState([]);
+  const [status, setStatus] = useState(STATUS.IDLE);
+  const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const { movies, error } = fetchTrendingMovies();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTrendingFilm = () => {
+    const fetchTrendingFilm = async () => {
+      setStatus(STATUS.PENDING);
       setLoading(true);
 
-      fetchTrendingMovies()
-        .then(data => {
-          setFilms(data);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      try {
+        const data = await fetchTrendingMovies();
+        setMovies(data);
+        setStatus(STATUS.RESOLVED);
+        setError(null);
+      } catch (error) {
+        setStatus(STATUS.REJECTED);
+        setError(error.message);
+      }
     };
+
     fetchTrendingFilm();
   }, []);
+
+  if (status === STATUS.PENDING) {
+    return <Loader />;
+  }
 
   return (
     <section>
       <h1>Trending today</h1>
-      {/* {error && <ErrorMessage message={error} />} */}
-      {films && <MovieList movies={films} />}
-      {loading && <Loader />}
+      {error && <ErrorMessage message={error} />}
+      {movies && <MovieList movies={movies} />}
+      {!loading && <Loader />}
     </section>
   );
 };

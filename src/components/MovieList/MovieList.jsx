@@ -1,17 +1,18 @@
-import PropTypes from 'react';
+// import PropTypes from 'react';
+
 import { List } from './MovieList.styled';
 import MovieListItem from 'components/MovieListItem/MovieListItem';
 
 export default function MovieList({ movies }) {
   return (
     <List>
-      {movies.map(({ id, original_title, poster_part }) => {
+      {movies.map(({ id, original_title, poster_path }) => {
         return (
           <MovieListItem
             key={id}
             id={id}
             title={original_title}
-            poster={poster_part}
+            poster={poster_path}
           />
         );
       })}
@@ -19,6 +20,6 @@ export default function MovieList({ movies }) {
   );
 }
 
-MovieList.propTypes = {
-  movies: PropTypes.array,
-};
+// MovieList.propTypes = {
+//   movies: PropTypes.arrayOf(PropTypes.object).isRequired,
+// };
