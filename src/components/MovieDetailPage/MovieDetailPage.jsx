@@ -31,8 +31,8 @@ export default function MovieDetailPage({ movieInfo }) {
   } = movieInfo;
 
   const genresArray = genres.map(gen => gen.name).join(',');
-
   const location = useLocation();
+
   return (
     <Container>
       <DetailsContainer>

@@ -1,20 +1,21 @@
 import { HeaderContainer, Link } from './Layout.styled';
 import { Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
+import Loader from '../Loader/Loader.jsx';
 
-const Layout = () => {
+export default function Layout() {
   return (
     <>
       <HeaderContainer>
         <nav>
           <Link to="/">Home</Link>
 
-          <Link to="/movies">Movies</Link>
+          <Link to="movies">Movies</Link>
         </nav>
       </HeaderContainer>
-      <main>
+      <Suspense fallback={<Loader />}>
         <Outlet />
-      </main>
+      </Suspense>
     </>
   );
-};
-export default Layout;
+}

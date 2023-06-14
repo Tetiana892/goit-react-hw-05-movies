@@ -19,7 +19,7 @@ export default function MovieDetails() {
   const [error, setError] = useState(null);
 
   // const location = useLocation();
-  //  const backLink = location?.state?.from ?? '/';
+  // const backLink = location?.state?.from ?? '/';
 
   useEffect(() => {
     searchGeneralInfo(movieId)

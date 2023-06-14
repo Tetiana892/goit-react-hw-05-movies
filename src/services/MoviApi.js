@@ -50,8 +50,9 @@ export const fetchMovieCasts = async movieId => {
 
 // запит обзорів для сторінки кінофільмів
 export const fetchMovieReviews = async movieId => {
-  const { data } = await axios.get(`
-  movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`);
+  const { data } = await axios.get(
+    `movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`
+  );
   const reviewsInfo = data.results.map(({ id, author, content }) => ({
     id,
     author,
