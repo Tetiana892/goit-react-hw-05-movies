@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { searchGeneralInfo } from '../../services/MoviApi';
 import { useParams } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import MovieDetailPage from 'components/MovieDetailPage/MovieDetailPage';
 import styled from '@emotion/styled';
+import ButtonBack from 'components/ButtonBack/ButtonBack';
 
 const Section = styled.section`
   padding: 40px 0;
@@ -18,8 +19,8 @@ export default function MovieDetails() {
   const [movieDetailPage, setMovieDetailPage] = useState();
   const [error, setError] = useState(null);
 
-  // const location = useLocation();
-  // const backLink = location?.state?.from ?? '/';
+  const location = useLocation();
+  const backLink = location?.state?.from ?? '/';
 
   useEffect(() => {
     searchGeneralInfo(movieId)
@@ -37,6 +38,7 @@ export default function MovieDetails() {
   return (
     <Section>
       <Container>
+        <ButtonBack location={backLink} />
         {error && <Navigate to="/" replace />}
         {movieDetailPage && <MovieDetailPage movieInfo={movieDetailPage} />}
       </Container>

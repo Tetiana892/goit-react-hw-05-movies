@@ -6,30 +6,46 @@ import SearchForm from 'components/SearchForm/SearchForm';
 import Loader from 'components/Loader/Loader';
 import { searchByMovies } from '..//../services/MoviApi';
 
+const STATUS = {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  REJECTED: 'rejected',
+  RESOLVED: 'resolved',
+};
+
 export default function Movies() {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [error, setError] = useState(null);
-  const [spiner, setSpiner] = useState(false);
+  const [status, setStatus] = useState(STATUS.IDLE);
 
   useEffect(() => {
     const currentQuery = searchParams.get('query');
+    const searchMovieId = async () => {
+      if (!currentQuery) return;
+      setStatus(STATUS.PENDING);
+      try {
+        const data = await searchByMovies(currentQuery);
 
-    if (!currentQuery) return;
-    setSpiner(true);
-    searchByMovies(currentQuery)
-      .then(data => {
         if (data.length === 0) {
           setMovies([]);
           setError('No content, please try another query.');
           return;
         }
         setMovies(data);
+        setStatus(STATUS.RESOLVED);
         setError('');
-      })
-      .catch(error => setError(error.message))
-      .finally(setSpiner(false));
+      } catch (error) {
+        setStatus(STATUS.REJECTED);
+        setError(error.message);
+      }
+    };
+    searchMovieId();
   }, [searchParams]);
+
+  if (status === STATUS.PENDING) {
+    return <Loader />;
+  }
 
   const formSubmit = value => {
     setSearchParams({ query: value });
@@ -43,9 +59,8 @@ export default function Movies() {
   return (
     <div>
       <SearchForm formSubmit={formSubmit} errorMessage={formErrorMessage} />
-      {spiner && <Loader />}
-      {error && <ErrorMessage message={error} />}
-      {movies && <MovieList movies={movies} />}
+      {STATUS.REJECTED && <ErrorMessage message={error} />}
+      {STATUS.RESOLVED && <MovieList movies={movies} />}
     </div>
   );
 }

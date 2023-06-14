@@ -14,13 +14,11 @@ const STATUS = {
 export default function Home() {
   const [status, setStatus] = useState(STATUS.IDLE);
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTrendingFilm = async () => {
       setStatus(STATUS.PENDING);
-      setLoading(true);
 
       try {
         const data = await fetchTrendingMovies();
@@ -45,7 +43,6 @@ export default function Home() {
       <h1>Trending today</h1>
       {error && <ErrorMessage message={error} />}
       {movies && <MovieList movies={movies} />}
-      {!loading && <Loader />}
     </section>
   );
 }

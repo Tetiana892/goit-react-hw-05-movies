@@ -43,5 +43,5 @@ export const TextBold = styled.span`
 
 export const TextTitle = styled.span`
   font-weight: 700;
-  color: #5db09d;
+  color: #f25c54;
 `;
