@@ -1,8 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
-
-import Loader from '../components/Loader/Loader.jsx';
+import { lazy } from 'react';
 import Layout from './Layout/Layout';
+import NotFound from 'page/NotFound/NotFound.styled';
 
 const Home = lazy(() => import('../page/Home/Home.jsx'));
 const Movies = lazy(() => import('../page/Movies/Movies.jsx'));
@@ -15,19 +14,17 @@ const MovieDetails = lazy(() =>
 const App = () => {
   return (
     <div>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="movies" element={<Movies />} />
-            <Route path="movies/:movieId" element={<MovieDetails />}>
-              <Route path="cast" element={<Cast />} />
-              <Route path="reviews" element={<Reviews />} />
-            </Route>
-            <Route path="*" element={<Home />} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="movies" element={<Movies />} />
+          <Route path="movies/:movieId" element={<MovieDetails />}>
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
           </Route>
-        </Routes>
-      </Suspense>
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </div>
   );
 };
