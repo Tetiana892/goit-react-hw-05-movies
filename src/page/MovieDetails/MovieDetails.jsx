@@ -31,12 +31,7 @@ export default function MovieDetails() {
         const data = await searchGeneralInfo(movieId);
         setMovieDetailPage(data);
         setStatus(STATUS.RESOLVED);
-        setError(null);
-        if (data.lenght === 0) {
-          setMovieDetailPage([]);
-          setError('There is no information about the film');
-          return;
-        }
+        setError('');
       } catch (error) {
         setStatus(STATUS.REJECTED);
         setError(error.message);
@@ -45,14 +40,12 @@ export default function MovieDetails() {
     generalInfo();
   }, [movieId, setMovieDetailPage]);
 
-  if (status === STATUS.PENDING) {
-    return <Loader />;
-  }
   return (
     <Section>
       <Container>
         <ButtonBack location={backLink.current} />
         {error && <Navigate to="/" replace />}
+        {status === STATUS.PENDING && <Loader />}
         {movieDetailPage && <MovieDetailPage movieInfo={movieDetailPage} />}
       </Container>
     </Section>

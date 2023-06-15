@@ -34,15 +34,12 @@ export default function Home() {
     fetchTrendingFilm();
   }, []);
 
-  if (status === STATUS.PENDING) {
-    return <Loader />;
-  }
-
   return (
     <section>
       <h1>Trending today</h1>
-      {error && <ErrorMessage message={error} />}
-      {movies && <MovieList movies={movies} />}
+      {status === STATUS.REJECTED && <ErrorMessage message={error} />}
+      {status === STATUS.PENDING && <Loader />}
+      {status === STATUS.RESOLVED && <MovieList movies={movies} />}
     </section>
   );
 }

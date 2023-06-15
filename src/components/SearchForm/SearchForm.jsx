@@ -15,7 +15,7 @@ export default function SearchForm({ formSubmit, errorMessage }) {
     setQuery('');
   };
 
-  const getQuery = e => {
+  const handleInput = e => {
     setQuery(e.target.value.toLowerCase().trim());
   };
 
@@ -25,8 +25,9 @@ export default function SearchForm({ formSubmit, errorMessage }) {
         <Input
           type="text"
           name="query"
+          autoFocus
           value={query}
-          onChange={getQuery}
+          onChange={handleInput}
           autoComplete="off"
           placeholder="find a movie"
         />

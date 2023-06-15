@@ -1,4 +1,3 @@
-// https://api.themoviedb.org/3/movie/550?api_key=cca79e12b25cdd9f67fc795a1689f5d9
 import axios from 'axios';
 
 const API_KEY = 'cca79e12b25cdd9f67fc795a1689f5d9';
@@ -6,16 +5,25 @@ axios.defaults.baseURL = 'https://api.themoviedb.org/3/';
 
 // список популярних фільмів на головній сторінці
 export const fetchTrendingMovies = async () => {
-  const response = await axios.get(`trending/movie/day?api_key=${API_KEY}`);
-  return response.data.results;
+  const { data } = await axios.get(
+    `trending/movie/day?api_key=${API_KEY}&language=uk&page=1`
+  );
+  return data.results;
 };
 
 // пошук фільму по ключовому слову
-export const searchByMovies = async keyword => {
-  const response = await axios.get(
-    `search/movie?api_key=${API_KEY}&language=en-US&page=1&include_adult=false&query=${keyword}`
+export const searchByMovies = async (query, page, total_pages) => {
+  const { data } = await axios.get(
+    `search/movie?api_key=${API_KEY}&language=en-US&include_adult=false`,
+    {
+      params: {
+        query,
+        page,
+        limit: total_pages,
+      },
+    }
   );
-  return response.data.results;
+  return data.results;
 };
 
 // запит повної інформації про фільм для сторінки кінофільму

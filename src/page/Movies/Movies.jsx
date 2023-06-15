@@ -13,7 +13,7 @@ const STATUS = {
   RESOLVED: 'resolved',
 };
 
-export default function Movies() {
+export default function Movies(props) {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [error, setError] = useState(null);
@@ -21,20 +21,23 @@ export default function Movies() {
 
   useEffect(() => {
     const currentQuery = searchParams.get('query');
+
     const searchMovieId = async () => {
       if (!currentQuery) return;
       setStatus(STATUS.PENDING);
+
       try {
         const data = await searchByMovies(currentQuery);
-
-        if (data.length === 0) {
-          setMovies([]);
-          setError('No content, please try another query.');
-          return;
-        }
         setMovies(data);
         setStatus(STATUS.RESOLVED);
         setError('');
+
+        if (data.length === 0) {
+          setMovies([]);
+          setError('Content missing, try another query.');
+          setStatus(STATUS.REJECTED);
+          return;
+        }
       } catch (error) {
         setStatus(STATUS.REJECTED);
         setError(error.message);
@@ -43,24 +46,23 @@ export default function Movies() {
     searchMovieId();
   }, [searchParams]);
 
-  if (status === STATUS.PENDING) {
-    return <Loader />;
-  }
-
   const formSubmit = value => {
     setSearchParams({ query: value });
   };
 
   const formErrorMessage = () => {
     setMovies([]);
+    setStatus(STATUS.REJECTED);
     setError('You entered an empty row!');
   };
 
   return (
     <div>
       <SearchForm formSubmit={formSubmit} errorMessage={formErrorMessage} />
-      {STATUS.REJECTED && <ErrorMessage message={error} />}
-      {STATUS.RESOLVED && <MovieList movies={movies} />}
+
+      {status === STATUS.REJECTED && <ErrorMessage message={error} />}
+      {status === STATUS.RESOLVED && <MovieList movies={movies} />}
+      {status === STATUS.PENDING && <Loader />}
     </div>
   );
 }
