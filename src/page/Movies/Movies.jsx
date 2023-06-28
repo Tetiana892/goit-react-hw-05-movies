@@ -13,7 +13,7 @@ const STATUS = {
   RESOLVED: 'resolved',
 };
 
-export default function Movies(props) {
+export default function Movies() {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [error, setError] = useState(null);
